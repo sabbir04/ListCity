@@ -2,6 +2,7 @@ package com.example.simpleparadox.listycity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -19,7 +20,6 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Declare the variables so that you will be able to reference it later.
     ListView cityList;
     EditText newName;
     LinearLayout nameField;
@@ -36,11 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
         cityList = findViewById(R.id.city_list);
 
-        //String []cities ={"Edmonton", "Vancouver", "Moscow", "Sydney", "Berlin", "Vienna", "Tokyo", "Beijing", "Osaka", "New Delhi"};
 
         dataList = new ArrayList<>();
-
-        //dataList.addAll(Arrays.asList(cities));
 
         cityAdapter = new ArrayAdapter<>(this, R.layout.content, dataList);
 
@@ -54,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        ArrayList<String> enteredCityName = new ArrayList<String>();
+
         final Button confirmButton = findViewById(R.id.button_confirm);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
                 cityAdapter.add(cityName);
                 newName.getText().clear();
                 nameField.setVisibility(View.INVISIBLE);
+
+                enteredCityName.add(cityName);
             }
         });
 
@@ -71,7 +73,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+        String []cities ={"Edmonton", "Vancouver", "Moscow",
+                "Sydney", "Berlin", "Vienna",
+                "Tokyo", "Beijing", "Osaka",
+                "New Delhi"};
+        cityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int index, long id) {
+                Intent intent = new Intent(MainActivity.this, secondActivity.class);
+
+                intent.putExtra("clickedItem", enteredCityName.get(index));
+                startActivity(intent);
+            }
+        });
     }
-
-
 }
